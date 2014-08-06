@@ -11,11 +11,28 @@
 
 
     <ui:define name="left">
-        
-        <h:outputText value="Left Text" />
-        
+
+        <h:outputText value="#{treeController.controllerName}" />
+        <h:form id="tree_form">
+            <p:panel id="tree_panel">
+                <f:event listener="#{treeController.buildTreeNode()}" type="preRenderView" />
+                
+                <p:tree value="#{treeController.currentTree}" var="node" selectionMode="single"
+                        selection="#{treeController.currentSelectedNodes}">
+                    
+                    <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed"/>
+                    
+                    <p:treeNode type="State">
+                        <h:outputText value="#{node}" />
+                    </p:treeNode>
+                    <p:treeNode type="Action">
+                        <h:outputText value="#{node}" />
+                    </p:treeNode>
+                </p:tree>
+            </p:panel>
+        </h:form>
     </ui:define>
-    
+
     <ui:define name="right">
         <h:outputText value="Right Text"/>
     </ui:define>

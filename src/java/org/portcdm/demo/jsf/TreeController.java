@@ -6,21 +6,60 @@
 
 package org.portcdm.demo.jsf;
 
-import javax.inject.Named;
+import java.io.Serializable;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+import org.portcdm.demo.ejb.NodeHandlerBean;
+import org.portcdm.demo.ejb.NodeServiceBean;
+import org.portcdm.demo.model.Node;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 
 /**
  *
  * @author Glenn
  */
-@Named(value="treeController")
+@Named("treeController")
 @ViewScoped
-public class TreeController {
+public class TreeController implements Serializable{
 
-    /**
-     * Creates a new instance of TreeController
-     */
-    public TreeController() {
+    @EJB
+    protected NodeHandlerBean nodeHandler;
+    private TreeNode currentTree;
+    private TreeNode[] currentSelectedNodes;
+    private String controllerName = "treeController";
+    
+    public TreeController() {        
+        NodeServiceBean.debug("Mera skit");
+    }
+
+    public void buildTreeNode() {
+        List<Node> nodeList = nodeHandler.retrieveCurrentTreeNodes();
+        if(nodeList == null) {
+            JsfUtil.addErrorMessage("Node node persisted");
+            return;
+        }
+        currentTree = new DefaultTreeNode("root", null);
+        for(Node node : nodeList){
+            TreeNode treeNode = new DefaultTreeNode(node.getNodeType().toString(), node.getNodeName(), currentTree);
+        }        
+    }
+
+    public TreeNode getCurrentTree() {
+        return currentTree;
+    }
+
+    public TreeNode[] getCurrentSelectedNodes() {
+        return currentSelectedNodes;
+    }
+
+    public void setCurrentSelectedNodes(TreeNode[] currentSelectedNodes) {
+        this.currentSelectedNodes = currentSelectedNodes;
     }
     
+    public String getControllerName() {
+        return controllerName;
+    }   
 }

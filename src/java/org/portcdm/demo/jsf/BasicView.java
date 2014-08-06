@@ -16,7 +16,7 @@ import org.primefaces.model.TreeNode;
  *
  * @author Glenn
  */
-@Named(value = "basicView")
+@Named("basicView")
 @ViewScoped
 public class BasicView implements Serializable {
 
