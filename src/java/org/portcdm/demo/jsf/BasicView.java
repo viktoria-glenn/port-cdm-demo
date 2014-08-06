@@ -5,6 +5,7 @@
  */
 package org.portcdm.demo.jsf;
 
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -17,7 +18,7 @@ import org.primefaces.model.TreeNode;
  */
 @Named(value = "basicView")
 @ViewScoped
-public class BasicView {
+public class BasicView implements Serializable {
 
     private String hello = "Hello World";
     private TreeNode root;
