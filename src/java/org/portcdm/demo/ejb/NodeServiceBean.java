@@ -27,10 +27,36 @@ public class NodeServiceBean {
     @PostConstruct
     public void initDB() {
         NodeServiceBean.debug("Init node service DB");
-        nodeDB.add(new Node("State 1", Node.NodeType.State, NodeServiceBean.getRandomDate()));
-        nodeDB.add(new Node("State 2", Node.NodeType.State, NodeServiceBean.getRandomDate()));
-        nodeDB.add(new Node("State 3", Node.NodeType.State, NodeServiceBean.getRandomDate()));
-        nodeDB.add(new Node("Action 1", Node.NodeType.Action, NodeServiceBean.getRandomDate()));
+        Node etb = new Node("ETB", Node.NodeType.ETB, NodeServiceBean.getRandomDate());
+        Node etd = new Node("ETD", Node.NodeType.ETD, NodeServiceBean.getRandomDate());
+        
+        Node vessel1 = new Node("Amelia III", Node.NodeType.Vessel, NodeServiceBean.getRandomDate());
+        Node vessel2 = new Node("North Start", Node.NodeType.Vessel, NodeServiceBean.getRandomDate());
+        Node vessel3 = new Node("Stena Stone", Node.NodeType.Vessel, NodeServiceBean.getRandomDate());
+        vessel1.setParentNode(etb);
+        vessel2.setParentNode(etb);
+        vessel3.setParentNode(etd);
+        
+        etb.getChildNodes().add(vessel1);
+        etb.getChildNodes().add(vessel2);
+        etd.getChildNodes().add(vessel3);
+        
+        Node state1 = new Node("Confirmed Berth", Node.NodeType.State, NodeServiceBean.getRandomDate());
+        Node state2 = new Node("Pilot On Board", Node.NodeType.State, NodeServiceBean.getRandomDate());
+        Node state3 = new Node("Tug Arrived", Node.NodeType.State, NodeServiceBean.getRandomDate());
+        Node state4 = new Node("Linesmen Arrived", Node.NodeType.State, NodeServiceBean.getRandomDate());
+        Node state5 = new Node("Moring Completed", Node.NodeType.State, NodeServiceBean.getRandomDate());
+        
+        vessel1.getChildNodes().add(state1);
+        vessel1.getChildNodes().add(state2);
+        
+        vessel2.getChildNodes().add(state1);
+        vessel2.getChildNodes().add(state2);
+        vessel2.getChildNodes().add(state3);
+        vessel2.getChildNodes().add(state4);
+        vessel2.getChildNodes().add(state5);
+        
+        nodeDB.add(etb);        
     }
     
     public HashSet<Node> getNodeDB() {
@@ -38,7 +64,7 @@ public class NodeServiceBean {
     }        
 
     public static void debug(String message) {
-        logger.info(message);
+        logger.fine(message);
     }
     
     protected static Date getRandomDate(){

@@ -7,7 +7,9 @@
 package org.portcdm.demo.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,6 +20,9 @@ import java.util.UUID;
 public class Node implements Serializable, Comparable<Node>{
     
     public enum NodeType {
+        ETB,
+        ETD,
+        Vessel,
         State,
         Action
     }
@@ -27,6 +32,10 @@ public class Node implements Serializable, Comparable<Node>{
     private NodeType nodeType;
     private Date created;
     private Date completed;
+    
+    private Node parentNode;
+    private List<Node> siblingNodes = new ArrayList();
+    private List<Node> childNodes = new ArrayList();
 
     public Node(String nodeName, NodeType nodeType, Date created) {
         this.nodeId = UUID.randomUUID();
@@ -69,6 +78,30 @@ public class Node implements Serializable, Comparable<Node>{
 
     public void setCompleted(Date completed) {
         this.completed = completed;
+    }
+
+    public Node getParentNode() {
+        return parentNode;
+    }
+
+    public void setParentNode(Node parentNode) {
+        this.parentNode = parentNode;
+    }
+
+    public List<Node> getSiblingNodes() {
+        return siblingNodes;
+    }
+
+    public void setSiblingNodes(List<Node> siblingNodes) {
+        this.siblingNodes = siblingNodes;
+    }
+
+    public List<Node> getChildNodes() {
+        return childNodes;
+    }
+
+    public void setChildNodes(List<Node> childNodes) {
+        this.childNodes = childNodes;
     }
 
     @Override

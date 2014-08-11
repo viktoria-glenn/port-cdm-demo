@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.portcdm.demo.jsf;
 
 import java.io.Serializable;
@@ -23,27 +22,34 @@ import org.primefaces.model.TreeNode;
  */
 @Named("treeController")
 @ViewScoped
-public class TreeController implements Serializable{
+public class TreeController implements Serializable {
 
     @EJB
     protected NodeHandlerBean nodeHandler;
     private TreeNode currentTree;
     private TreeNode[] currentSelectedNodes;
     private String controllerName = "treeController";
-    
-    public TreeController() {        
-        NodeServiceBean.debug("Mera skit");
+
+    public TreeController() {
+        NodeServiceBean.debug("Mest skit");
     }
 
     public void buildTreeNode() {
         List<Node> nodeList = nodeHandler.retrieveCurrentTreeNodes();
-        if(nodeList == null) {
+        if (nodeList == null) {
             JsfUtil.addErrorMessage("Node node persisted");
             return;
         }
         currentTree = new DefaultTreeNode("root", null);
-        for(Node node : nodeList){
-            TreeNode treeNode = new DefaultTreeNode(node.getNodeType().toString(), node.getNodeName(), currentTree);
+        recursiveTreeBuilder(currentTree, nodeList);
+    }
+    
+    private void recursiveTreeBuilder(TreeNode parentTreeNode, List<Node>  childTreeNodeList) {
+        for(Node node : childTreeNodeList){
+            DefaultTreeNode treeNode = new DefaultTreeNode(node.getNodeType().toString(), node.getNodeName(), parentTreeNode);
+            if(!node.getChildNodes().isEmpty()) {
+                this.recursiveTreeBuilder(treeNode, node.getChildNodes());
+            }
         }        
     }
 
@@ -58,8 +64,8 @@ public class TreeController implements Serializable{
     public void setCurrentSelectedNodes(TreeNode[] currentSelectedNodes) {
         this.currentSelectedNodes = currentSelectedNodes;
     }
-    
+
     public String getControllerName() {
         return controllerName;
-    }   
+    }
 }
