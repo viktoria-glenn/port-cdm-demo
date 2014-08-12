@@ -20,6 +20,7 @@ import java.util.UUID;
 public class Node implements Serializable, Comparable<Node>{
     
     public enum NodeType {
+        Root,
         ETB,
         ETD,
         Vessel,

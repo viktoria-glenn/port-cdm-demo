@@ -8,11 +8,14 @@ package org.portcdm.demo.jsf;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.portcdm.demo.ejb.NodeHandlerBean;
 import org.portcdm.demo.ejb.NodeServiceBean;
 import org.portcdm.demo.model.Node;
+import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -27,7 +30,7 @@ public class TreeController implements Serializable {
     @EJB
     protected NodeHandlerBean nodeHandler;
     private TreeNode currentTree;
-    private TreeNode[] currentSelectedNodes;
+    private DefaultTreeNode currentSelectedNodes;
     private String controllerName = "treeController";
 
     public TreeController() {
@@ -53,15 +56,19 @@ public class TreeController implements Serializable {
         }        
     }
 
+    public void onNodeSelect(NodeSelectEvent event){
+         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected ", event.getTreeNode().toString());
+         FacesContext.getCurrentInstance().addMessage(controllerName, message);
+    }
     public TreeNode getCurrentTree() {
         return currentTree;
     }
 
-    public TreeNode[] getCurrentSelectedNodes() {
+    public DefaultTreeNode getCurrentSelectedNodes() {
         return currentSelectedNodes;
     }
 
-    public void setCurrentSelectedNodes(TreeNode[] currentSelectedNodes) {
+    public void setCurrentSelectedNodes(DefaultTreeNode currentSelectedNodes) {
         this.currentSelectedNodes = currentSelectedNodes;
     }
 

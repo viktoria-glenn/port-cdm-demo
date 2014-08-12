@@ -6,45 +6,50 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="top">
-        <p:outputLabel value="Top panel" />        
+        <p:outputLabel value="Port CDM Visual Prototype Demo" />
+        <p:growl id="messages" showDetail="true" autoUpdate="true" />
     </ui:define>
 
 
     <ui:define name="left">
 
-        <h:outputText value="#{treeController.controllerName}" />
+
         <h:form id="tree_form">
             <p:panel id="tree_panel">
                 <f:event listener="#{treeController.buildTreeNode()}" type="preRenderView" />
 
                 <p:tree value="#{treeController.currentTree}" var="node" selectionMode="single"
                         selection="#{treeController.currentSelectedNodes}">
-
                     <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed"/>
-                    
+                    <p:ajax event="select" update=":messages" listener="#{treeController.onNodeSelect}" />
+
                     <p:treeNode type="ETB" icon="ui-icon-home">
                         <h:outputText value="#{node}" />
                     </p:treeNode>
-                    <p:treeNode type="ETD" icon="ui-icon-home">
+                    <p:treeNode type="ETD" icon="ui-icon-home" >
                         <h:outputText value="#{node}" />
                     </p:treeNode>
                     <p:treeNode type="Vessel" icon="ui-icon-flag">
                         <h:outputText value="#{node}" />
                     </p:treeNode>
-                    <p:treeNode type="State" icon="ui-icon-document">
+                    <p:treeNode type="State" icon="ui-icon-document" styleClass="treenode_color_green">
                         <h:outputText value="#{node}" />
                     </p:treeNode>
                     <p:treeNode type="Action" icon="ui-icon-person">
                         <h:outputText value="#{node}" />
                     </p:treeNode>
-                    
+
                 </p:tree>
             </p:panel>
         </h:form>
     </ui:define>
 
     <ui:define name="right">
-        <h:outputText value="Right Text"/>
+        <h:form id="detail_form">
+            <p:panel id="detail_panel" header="Node Detail">
+                <h:outputText value="#{treeController.controllerName}" />
+            </p:panel>
+        </h:form>
     </ui:define>
 
 </ui:composition>
